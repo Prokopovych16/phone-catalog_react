@@ -31,6 +31,30 @@ export const ItemInformation = () => {
     bucket => bucket.itemId === currentProduct?.id,
   );
 
+  const colorMapping: Record<string, string> = {
+    'space gray': '#485063',
+    spacegray: '#485063',
+    silver: '#C0C0C0',
+    gold: '#ffbb07',
+    midnight: '#1e2232',
+    'rose gold': '#ff83e5',
+    rosegold: '#ff83e5',
+    'sky blue': '#96daff',
+    'midnight-green': '#0E3A3A',
+    midnightgreen: '#0E3A3A',
+    red: '#FF3B30',
+    black: '#000000',
+    white: '#f5fafd',
+    blue: '#007AFF',
+    green: '#acff96',
+    yellow: '#dfe515',
+    purple: '#d99aea',
+    aqua: '#00BFFF',
+    pink: '#FF6F61',
+    orange: '#FF9500',
+    // Add more colors if needed
+  };
+
   // функція для добавлення favourite
   const generalProducts = useAppSelector(state => state.products.items);
 
@@ -181,21 +205,28 @@ export const ItemInformation = () => {
                   styles.itemInformation_generalInfo_edit__colours_circles
                 }
               >
-                {currentProduct?.colorsAvailable.map(color => (
-                  <Link
-                    key={color}
-                    to={`../${currentProduct.namespaceId}-${currentProduct.capacity.toLowerCase()}-${color}`}
-                  >
-                    <div
-                      style={{
-                        borderColor:
-                          currentProduct.color === color ? 'black' : '#E2E6E9',
-                      }}
+                {currentProduct?.colorsAvailable.map(color => {
+                  const mappedColor = colorMapping[color] || color; // Use the mapped color or fallback to the original
+                  const formattedColor = color.replace(/\s+/g, '-'); // Replace spaces with hyphens
+
+                  return (
+                    <Link
+                      key={color}
+                      to={`../${currentProduct.namespaceId}-${currentProduct.capacity.toLowerCase()}-${formattedColor}`}
                     >
-                      <div style={{ backgroundColor: color }}></div>
-                    </div>
-                  </Link>
-                ))}
+                      <div
+                        style={{
+                          borderColor:
+                            currentProduct.color === color
+                              ? 'black'
+                              : '#E2E6E9',
+                        }}
+                      >
+                        <div style={{ backgroundColor: mappedColor }}></div>
+                      </div>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
 
